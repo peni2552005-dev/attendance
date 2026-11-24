@@ -61,7 +61,7 @@
   <!-- ===================================================================== -->
   <!-- CUSTOM CONFIRMATION MODAL                                             -->
   <!-- ===================================================================== -->
-  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4">
+  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 p-4">
     <div class="bg-white border border-slate-300 rounded-xl shadow-2xl max-w-sm w-full p-6">
       <div class="flex items-center gap-3 mb-3">
         <div class="w-10 h-10 rounded-lg bg-red-100 text-red-700 flex items-center justify-center shrink-0">
@@ -973,7 +973,7 @@
   <!-- ===================================================================== -->
   <!-- PRINT / PDF PREVIEW MODAL (પ્રિન્ટ પ્રિવ્યૂ અને PDF સેવ મોડલ)         -->
   <!-- ===================================================================== -->
-  <div id="pdf-preview-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-xs p-2 sm:p-4 overflow-y-auto">
+  <div id="pdf-preview-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 p-2 sm:p-4 overflow-y-auto">
     <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[94vh] flex flex-col overflow-hidden">
       <div class="bg-slate-900 text-white px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 shrink-0">
         <div>
@@ -1046,108 +1046,37 @@
 
       function setupPWAManifestAndIcons() {
         try {
-          // Render the exact Century Karkhano C-Clock + Industrial Gear SVG Emblem as a crisp 512x512 PNG App Icon
-          const svgMarkup = `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-              <defs>
-                <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#1e293b" />
-                  <stop offset="100%" stop-color="#090d16" />
-                </linearGradient>
-                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#FDE68A" />
-                  <stop offset="45%" stop-color="#F59E0B" />
-                  <stop offset="100%" stop-color="#B45309" />
-                </linearGradient>
-                <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#F8FAFC" />
-                  <stop offset="50%" stop-color="#CBD5E1" />
-                  <stop offset="100%" stop-color="#64748B" />
-                </linearGradient>
-              </defs>
-              <!-- App Icon Rounded Background -->
-              <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
-              <rect x="14" y="14" width="484" height="484" rx="100" fill="none" stroke="url(#goldGrad)" stroke-width="10" opacity="0.65" />
+          // Lightweight inline SVG icon URI so mobile home screen launcher never hangs
+          const compactSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="26" fill="#0f172a"/><path d="M60 16A44 44 0 1 0 60 104L60 88A28 28 0 1 1 60 32Z" fill="#f59e0b"/><path d="M62 10h6l2 8a42 42 0 0 1 12 5l7-5 5 5-5 7a42 42 0 0 1 7 12l8 2v7l-8 2a42 42 0 0 1 0 14l8 2v7l-8 2a42 42 0 0 1-7 12l5 7-5 5-7-5a42 42 0 0 1-12 5l-2 8h-6V94a34 34 0 0 0 0-68Z" fill="#d97706"/><line x1="60" y1="60" x2="60" y2="38" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/><line x1="60" y1="60" x2="44" y2="70" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/><circle cx="60" cy="60" r="4.5" fill="#fbbf24"/></svg>`;
+          const encodedSvg = 'data:image/svg+xml;utf8,' + encodeURIComponent(compactSvg);
 
-              <!-- Centered Century Karkhano Clock + Gear Emblem -->
-              <g transform="translate(86, 30) scale(2.83)">
-                <!-- Left Thick 'C' Arc in Brushed Gold -->
-                <path d="M 60 16 A 44 44 0 1 0 60 104 L 60 88 A 28 28 0 1 1 60 32 Z" fill="url(#goldGrad)" />
-                <!-- Right Industrial Gear Half in Gold -->
-                <path d="M 62 10 L 68 10 L 70 18 A 42 42 0 0 1 82 23 L 89 18 L 94 23 L 89 30 A 42 42 0 0 1 96 42 L 104 44 L 104 51 L 96 53 A 42 42 0 0 1 96 67 L 104 69 L 104 76 L 96 78 A 42 42 0 0 1 89 90 L 94 97 L 89 102 L 82 97 A 42 42 0 0 1 70 102 L 68 110 L 62 110 L 62 94 A 34 34 0 0 0 62 26 Z" fill="url(#goldGrad)" />
-                <!-- Inner Silver Accent Ring -->
-                <path d="M 62 29 A 31 31 0 0 1 62 91" fill="none" stroke="url(#silverGrad)" stroke-width="3.5" stroke-linecap="round" />
-                <!-- Clock Tick Marks -->
-                <g stroke="url(#goldGrad)" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="60" y1="34" x2="60" y2="39" />
-                  <line x1="73" y1="38" x2="70.5" y2="42" />
-                  <line x1="82" y1="47" x2="78" y2="49.5" />
-                  <line x1="86" y1="60" x2="81" y2="60" />
-                  <line x1="82" y1="73" x2="78" y2="70.5" />
-                  <line x1="73" y1="82" x2="70.5" y2="78" />
-                  <line x1="60" y1="86" x2="60" y2="81" />
-                  <line x1="47" y1="82" x2="49.5" y2="78" />
-                  <line x1="38" y1="73" x2="42" y2="70.5" />
-                  <line x1="34" y1="60" x2="39" y2="60" />
-                  <line x1="38" y1="47" x2="42" y2="49.5" />
-                  <line x1="47" y1="38" x2="49.5" y2="42" />
-                </g>
-                <!-- Clock Hands (8 to 5 Shift) -->
-                <line x1="60" y1="60" x2="60" y2="38" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round" />
-                <line x1="60" y1="60" x2="44" y2="70" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round" />
-                <circle cx="60" cy="60" r="4.5" fill="url(#goldGrad)" stroke="#0f172a" stroke-width="1.5" />
-              </g>
+          const appleIcon = document.getElementById('pwa-apple-icon');
+          const favIcon = document.getElementById('pwa-favicon');
+          if (appleIcon) appleIcon.href = encodedSvg;
+          if (favIcon) favIcon.href = encodedSvg;
 
-              <!-- Brand Typography at Bottom of Icon -->
-              <text x="256" y="425" text-anchor="middle" fill="url(#goldGrad)" font-family="Inter, sans-serif" font-weight="800" font-size="52" letter-spacing="3">CENTURY</text>
-              <text x="256" y="466" text-anchor="middle" fill="#E2E8F0" font-family="Inter, sans-serif" font-weight="700" font-size="28" letter-spacing="4">KARKHANO</text>
-            </svg>
-          `.trim();
-
-          const svgBlob = new Blob([svgMarkup], { type: 'image/svg+xml;charset=utf-8' });
-          const svgUrl = URL.createObjectURL(svgBlob);
-          const img = new Image();
-
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = 512;
-            canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, 512, 512);
-            URL.revokeObjectURL(svgUrl);
-
-            const iconDataUrl = canvas.toDataURL('image/png');
-            const appleIcon = document.getElementById('pwa-apple-icon');
-            const favIcon = document.getElementById('pwa-favicon');
-            if (appleIcon) appleIcon.href = iconDataUrl;
-            if (favIcon) favIcon.href = iconDataUrl;
-
+          // Only attach manifest when running in standard browser tab (skip inside standalone app launch to avoid launcher loop)
+          const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+          if (!isStandalone) {
             const baseCleanUrl = window.location.href.split('#')[0];
             const manifestObj = {
-              name: 'સેન્ચ્યુરી પ્રોડક્ટ — કારખાના મેનેજમેન્ટ',
+              name: 'Century Karkhano',
               short_name: 'Century Karkhano',
-              description: 'સેન્ચ્યુરી કારખાના હાજરી, ઓવરટાઇમ, માસિક PDF અને નોંધ એપ',
               start_url: baseCleanUrl,
-              scope: './',
               display: 'standalone',
-              orientation: 'any',
               background_color: '#0f172a',
               theme_color: '#0f172a',
               icons: [
-                { src: iconDataUrl, sizes: '192x192', type: 'image/png', purpose: 'any' },
-                { src: iconDataUrl, sizes: '512x512', type: 'image/png', purpose: 'any' },
+                { src: encodedSvg, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
+                { src: encodedSvg, sizes: '512x512', type: 'image/svg+xml', purpose: 'any' },
               ],
             };
-
-            const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
-            const manifestUrl = URL.createObjectURL(manifestBlob);
+            const manifestUrl = 'data:application/manifest+json;utf8,' + encodeURIComponent(JSON.stringify(manifestObj));
             const manifestLink = document.getElementById('pwa-manifest-link');
             if (manifestLink) manifestLink.href = manifestUrl;
-          };
-
-          img.src = svgUrl;
+          }
         } catch (err) {
-          console.warn('PWA icon generation skipped:', err);
+          console.warn('PWA icon setup skipped:', err);
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
